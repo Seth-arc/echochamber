@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Echo Chamber</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto+Mono:wght@300;400;500&display=swap">
+</head>
+<body>
+    <div id="splash-screen">
+        <div class="cinematic-letterbox top"></div>
+        <div class="cinematic-letterbox bottom"></div>
+        
+        <div class="background-image-container">
+            <!-- The main image will be a CSS background -->
+            <div class="vignette-overlay"></div>
+            <div class="noise-overlay"></div>
+            <div class="film-grain"></div>
+            <div class="grid-overlay"></div>
+            <div class="lens-flare"></div>
+        </div>
+
+        <div class="particle-container">
+            <!-- Particles will be generated here with JS -->
+        </div>
+
+        <div class="data-stream-container">
+            <!-- We'll generate data streams here with JS -->
+        </div>
+
+        <div id="titles">
+            <h1 id="main-title">
+                <span class="glitch-layer layer1">ECHO CHAMBER</span>
+                <span class="glitch-layer layer2">ECHO CHAMBER</span>
+                <span class="glitch-layer layer3">ECHO CHAMBER</span>
+                <span class="main-layer">ECHO CHAMBER</span>
+            </h1>
+        </div>
+
+        <div id="fallacy-alerts">
+            <div id="strawman-alert" class="fallacy-alert hidden">STRAWMAN</div>
+            <div id="dichotomy-alert" class="fallacy-alert hidden">FALSE DICHOTOMY</div>
+            <div id="baiting-alert" class="fallacy-alert hidden">EMOTIONAL BAITING</div>
+        </div>
+
+        <div id="shield-pulse-overlay" class="hidden"></div>
+
+        <div id="cta-container">
+            <button id="cta-button">
+                <span class="button-text">ENGAGE SHIELD</span>
+                <span class="button-highlight"></span>
+            </button>
+            <div class="button-glow"></div>
+            <div class="cta-instruction">PREPARE TO DEFEND AGAINST COGNITIVE MANIPULATION</div>
+        </div>
+        
+        <div class="cinematic-effects">
+            <div class="chromatic-aberration"></div>
+            <div class="scan-effect"></div>
+            <div class="light-leak"></div>
+        </div>
+    </div>
+
+    <!-- Loading overlay - hidden initially -->
+    <div id="loading-screen" class="hidden">
+        <div class="loading-content">
+            <div class="loading-title">INITIALIZING</div>
+            <div class="loading-progress-container">
+                <div class="loading-progress-bar">
+                    <div class="loading-progress-fill"></div>
+                </div>
+            </div>
+            <div class="loading-text">
+                <span class="loading-label">COGNITIVE SHIELD PROTOCOL</span>
+                <span class="loading-status">CALIBRATING</span>
+            </div>
+        </div>
+        <div class="loading-scanlines"></div>
+        <div class="loading-glitch-overlay"></div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+    // Add CTA button click handler to navigate to game page
+    document.getElementById('cta-button').addEventListener('click', function() {
+        // Show loading overlay with animation
+        document.getElementById('loading-screen').classList.remove('hidden');
+        
+        // Simulate loading process
+        let progress = 0;
+        const interval = setInterval(() => {
+            progress += 5;
+            document.querySelector('.loading-progress-fill').style.width = `${progress}%`;
+            document.querySelector('.loading-status').textContent = 
+                progress < 50 ? 'CALIBRATING' : 
+                progress < 80 ? 'INITIALIZING SHIELDS' : 'READY';
+                
+            if (progress >= 100) {
+                clearInterval(interval);
+                // Redirect to game.html after animation completes
+                setTimeout(() => window.location.href = 'game.html', 500);
+            }
+        }, 100);
+    });
+    </script>
+</body>
+</html>

@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Echo Chamber - Fallacy Detection</title>
+    <link rel="stylesheet" href="game.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto+Mono&family=Roboto:wght@300;400;500;700&display=swap">
+    <style>
+        /* Boot sequence styles */
+        .boot-sequence {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--primary-dark);
+            color: #3a8cb9;
+            font-family: 'Roboto Mono', monospace;
+            padding: 20px;
+            font-size: 14px;
+            line-height: 1.5;
+            overflow: hidden;
+            z-index: 1001;
+            opacity: 1;
+            transition: opacity 0.5s ease-out;
+        }
+        
+        .boot-sequence.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .boot-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .boot-line {
+            margin-bottom: 8px;
+            overflow: hidden;
+            white-space: nowrap;
+            animation: typingEffect 0ms linear forwards;
+            opacity: 0;
+        }
+        
+        @keyframes typingEffect {
+            0% {
+                width: 0;
+                opacity: 1;
+            }
+            99% {
+                width: 99%;
+                opacity: 1;
+            }
+            100% {
+                width: 100%;
+                opacity: 1;
+            }
+        }
+        
+        .status-success {
+            color: #3c9d4e;
+        }
+        
+        .status-warning {
+            color: #e09e10;
+        }
+        
+        .status-error {
+            color: #aa2530;
+        }
+        
+        .system-name {
+            color: #e6b93d;
+            font-weight: bold;
+        }
+        
+        /* Failsafe style to ensure game container is visible regardless of JS */
+        #game-container {
+            opacity: 1 !important;
+            visibility: visible !important;
+            filter: none !important;
+            transform: none !important;
+        }
+        
+        /* This class will be removed by JS if it loads properly */
+        .no-js-warning {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            background-color: rgba(224, 158, 16, 0.9);
+            color: #fff;
+            padding: 10px 15px;
+            border-radius: 4px;
+            font-family: 'Roboto', sans-serif;
+            font-size: 14px;
+            z-index: 9999;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Fallback content for feed container */
+        .fallback-post {
+            width: 80%;
+            max-width: 600px;
+            margin: 15px auto;
+            padding: 20px;
+            background-color: var(--post-bg);
+            border-radius: 4px;
+            border: 1px solid rgba(59, 133, 187, 0.2);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .feed-loading {
+            text-align: center;
+            color: var(--text-dim);
+            margin: 50px 0;
+            font-family: 'Roboto', sans-serif;
+        }
+        
+        .feed-loading .spinner {
+            width: 40px;
+            height: 40px;
+            margin: 15px auto;
+            border: 3px solid rgba(59, 133, 187, 0.2);
+            border-top-color: var(--accent-blue);
+            border-radius: 50%;
+            animation: spin 1s infinite linear;
+        }
+    </style>
+</head>
+<body>
+    <div class="boot-sequence">
+        <div class="boot-content">
+            <div class="boot-line" style="animation-delay: 300ms; animation-duration: 1000ms;">
+                > INITIALIZING ECHO CHAMBER SYSTEM...
+            </div>
+            <div class="boot-line" style="animation-delay: 1400ms; animation-duration: 800ms;">
+                > LOADING NEURAL NETWORK COMPONENTS...
+            </div>
+            <div class="boot-line" style="animation-delay: 2300ms; animation-duration: 600ms;">
+                > RHETORICAL ANALYSIS MODULE: <span class="status-success">ONLINE</span>
+            </div>
+            <div class="boot-line" style="animation-delay: 3000ms; animation-duration: 700ms;">
+                > LOGICAL FALLACY DETECTION: <span class="status-success">ONLINE</span>
+            </div>
+            <div class="boot-line" style="animation-delay: 3800ms; animation-duration: 900ms;">
+                > COGNITIVE SHIELD GENERATOR: <span class="status-success">CALIBRATED</span>
+            </div>
+            <div class="boot-line" style="animation-delay: 4800ms; animation-duration: 500ms;">
+                > CONTENT GENERATION ENGINE: <span class="status-warning">WARMING UP</span>
+            </div>
+            <div class="boot-line" style="animation-delay: 5400ms; animation-duration: 400ms;">
+                > ESTABLISHING SECURE CONNECTION...
+            </div>
+            <div class="boot-line" style="animation-delay: 5900ms; animation-duration: 800ms;">
+                > CONNECTION ESTABLISHED TO <span class="system-name">ECHO CHAMBER MAINFRAME v1.0.3</span>
+            </div>
+            <div class="boot-line" style="animation-delay: 6800ms; animation-duration: 700ms;">
+                > INITIALIZING INTERFACE PROTOCOLS...
+            </div>
+            <div class="boot-line" style="animation-delay: 7600ms; animation-duration: 900ms;">
+                > FINAL SYSTEM CHECK: <span class="status-success">ALL SYSTEMS OPERATIONAL</span>
+            </div>
+            <div class="boot-line" style="animation-delay: 8600ms; animation-duration: 1200ms;">
+                > WELCOME TO ECHO CHAMBER - LAUNCHING APPLICATION...
+            </div>
+        </div>
+    </div>
+
+    <!-- Failsafe warning - will be removed if JS loads properly -->
+    <div class="no-js-warning" id="noJsWarning">
+        JavaScript may not be loading correctly. If the game interface doesn't appear, please try refreshing the page.
+    </div>
+
+    <div id="game-container">
+        <header>
+            <div id="game-header">
+                <div id="player-info">
+                    <div class="lives-container">
+                        <span class="lives-label">LIVES:</span>
+                        <div class="lives-icons">
+                            <div class="life-icon active"></div>
+                            <div class="life-icon active"></div>
+                            <div class="life-icon active"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="level-container">
+                        <span class="level-label">LEVEL:</span>
+                        <span class="level-value">1</span>
+                    </div>
+                </div>
+                
+                <div id="shield-meter-container">
+                    <div class="shield-label">COGNITIVE SHIELD</div>
+                    <div class="shield-meter-background">
+                        <div class="shield-meter-fill"></div>
+                    </div>
+                    <div class="shield-percentage">100%</div>
+                </div>
+                
+                <div id="score-container">
+                    <div class="score-label">SCORE</div>
+                    <div class="score-value">0</div>
+                </div>
+
+                <div id="audio-controls">
+                    <button id="toggle-audio" class="audio-toggle audio-on" aria-label="Toggle audio">
+                        <span class="audio-icon"></span>
+                    </button>
+                </div>
+            </div>
+        </header>
+        
+        <main>
+            <div id="feed-container">
+                <!-- Fallback content in case posts don't load -->
+                <div class="feed-loading">
+                    <div class="spinner"></div>
+                    <p>Loading content feed...</p>
+                </div>
+                
+                <div class="fallback-post">
+                    <div class="post-header">
+                        <div class="post-avatar">T</div>
+                        <div class="post-user-info">
+                            <div class="post-username">TruthSeeker42</div>
+                            <div class="post-timestamp">Just now</div>
+                        </div>
+                    </div>
+                    <div class="post-content">I think climate change deserves more thoughtful discussion. There are valid points on multiple sides.</div>
+                    <div class="post-interactions">
+                        <div class="post-interaction">❤️ 12</div>
+                        <div class="post-interaction">🔁 5</div>
+                        <div class="post-interaction">💬 3</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="fallacy-controls">
+                <div class="fallacy-button-row">
+                    <button class="fallacy-button" data-fallacy="strawman">Strawman</button>
+                    <button class="fallacy-button" data-fallacy="false_dilemma">False Dilemma</button>
+                    <button class="fallacy-button" data-fallacy="ad_hominem">Ad Hominem</button>
+                </div>
+                <div class="fallacy-button-row">
+                    <button class="fallacy-button" data-fallacy="appeal_emotion">Appeal to Emotion</button>
+                    <button class="fallacy-button" data-fallacy="hasty_generalization">Hasty Generalization</button>
+                    <button class="fallacy-button" data-fallacy="appeal_authority">Appeal to Authority</button>
+                </div>
+                <div class="fallacy-button-row advanced-fallacies hidden">
+                    <button class="fallacy-button" data-fallacy="stats_manipulation">Statistical Manipulation</button>
+                    <button class="fallacy-button" data-fallacy="confirmation_bias">Confirmation Bias</button>
+                    <button class="fallacy-button" data-fallacy="false_causality">False Causality</button>
+                </div>
+                <div class="fallacy-button-row expert-fallacies hidden">
+                    <button class="fallacy-button" data-fallacy="inauthentic_behavior">Inauthentic Behavior</button>
+                    <button class="fallacy-button" data-fallacy="whataboutism">Whataboutism</button>
+                    <button class="fallacy-button" data-fallacy="moving_goalposts">Moving Goalposts</button>
+                </div>
+            </div>
+        </main>
+        
+        <div id="feedback-panel" class="hidden">
+            <div class="feedback-content">
+                <div class="feedback-header"></div>
+                <div class="feedback-description"></div>
+                <button class="feedback-close">Continue</button>
+            </div>
+        </div>
+        
+        <div id="level-transition" class="hidden">
+            <div class="level-transition-content">
+                <h2>Level <span class="next-level-number">2</span></h2>
+                <p class="level-description">New fallacies unlocked! Watch out for more complex manipulation tactics.</p>
+                <div class="new-fallacies">
+                    <div class="new-fallacy-item">
+                        <span class="fallacy-name">Statistical Manipulation</span>
+                        <p class="fallacy-description">Misusing statistics to support an argument.</p>
+                    </div>
+                </div>
+                <button class="level-continue">Continue</button>
+            </div>
+        </div>
+        
+        <div id="game-over" class="hidden">
+            <div class="game-over-content">
+                <h2>Cognitive Overload</h2>
+                <div class="game-stats">
+                    <div class="stat-item">
+                        <span class="stat-label">Final Score:</span>
+                        <span class="final-score stat-value">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Level Reached:</span>
+                        <span class="final-level stat-value">1</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Most Missed Fallacy:</span>
+                        <span class="most-missed stat-value">Strawman</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Avg. Reaction Time:</span>
+                        <span class="avg-reaction stat-value">1.5s</span>
+                    </div>
+                </div>
+                <div class="game-over-buttons">
+                    <button id="play-again">Play Again</button>
+                    <button id="return-home">Return Home</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Clear any fallback content once the feed container is properly populated
+        window.clearFallbackContent = function() {
+            const fallbackElements = document.querySelectorAll('.feed-loading, .fallback-post');
+            fallbackElements.forEach(el => {
+                if (el && el.parentNode) {
+                    el.parentNode.removeChild(el);
+                }
+            });
+        };
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Simplified boot sequence
+            console.log("DOM loaded - starting game initialization");
+            
+            // Remove no-JS warning
+            const noJsWarning = document.getElementById('noJsWarning');
+            if (noJsWarning) noJsWarning.remove();
+            
+            // Find all animation elements
+            const bootSequence = document.querySelector('.boot-sequence');
+            
+            // Define a function to fade out boot sequence
+            function fadeOutBoot() {
+                if (bootSequence) {
+                    bootSequence.classList.add('fade-out');
+                    setTimeout(() => {
+                        if (bootSequence.parentNode) {
+                            bootSequence.parentNode.removeChild(bootSequence);
+                        }
+                    }, 1000);
+                }
+            }
+            
+            // Set timeout to fade out boot sequence
+            setTimeout(fadeOutBoot, 9000);
+        });
+    </script>
+
+    <!-- Load all scripts in the correct order using regular script tags -->
+    <script src="modules/fallacy-definitions.js"></script>
+    <script src="modules/fallacy-detector.js"></script>
+    <script src="modules/game-stats.js"></script>
+    <script src="modules/post-generator.js"></script>
+    <script src="game.js"></script>
+</body>
+</html> 
