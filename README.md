@@ -11,35 +11,6 @@ The Echo Chamber game now simulates contemporary influence campaigns that mirror
 - **Corporate Astroturfing**: Fake grassroots movements funded by corporate interests  
 - **Domestic Political Manipulation**: Sophisticated messaging designed to increase polarization
 
-### Campaign Types
-
-#### 1. Foreign State Disinformation
-- **Objective**: Undermine institutional trust and social cohesion
-- **Tactics**: Doubt seeding, false equivalency, amplifying division
-- **Common Fallacies**: Appeal to emotion, false dilemma, ad hominem, strawman
-- **Indicators**: Authority-sounding usernames, institutional skepticism, "both sides" narratives
-
-#### 2. Corporate Astroturfing  
-- **Objective**: Simulate grassroots support for corporate interests
-- **Tactics**: Fake grassroots messaging, economic fear appeals, job concerns
-- **Common Fallacies**: Appeal to authority, hasty generalization, statistical manipulation
-- **Indicators**: Professional messaging, economic arguments, industry talking points
-
-#### 3. Domestic Political Manipulation
-- **Objective**: Increase polarization and emotional response
-- **Tactics**: Emotional manipulation, group identity appeals, artificial urgency
-- **Common Fallacies**: Appeal to emotion, false dilemma, strawman, hasty generalization
-- **Indicators**: Urgent language, in-group/out-group framing, time pressure
-
-### Sentiment Pattern Recognition
-
-The game periodically presents light analytical questions that help students recognize influence patterns:
-
-- **Emotional Targeting**: Identifying which emotions are being manipulated
-- **Username Patterns**: Recognizing fake account naming conventions
-- **Coordination Indicators**: Spotting repeated talking points and messaging
-- **Authenticity Markers**: Distinguishing real grassroots from astroturfing
-
 ### Educational Value
 
 This simulation provides students with:
